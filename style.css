@@ -1,0 +1,143 @@
+/*
+  Required structure:
+  <main class="radio-hero">
+    <section class="radio-hero__grid" aria-label="準備画面">
+      <h1 class="radio-hero__title radio-hero__title--wide">READY<br>READY<br>READY</h1>
+      <h1 class="radio-hero__title radio-hero__title--tall">READY<br>READY<br>READY<br>READY<br>READY</h1>
+    </section>
+    <div class="radio-hero__badge" role="img" aria-label="Morse Wakarunsu RUC"></div>
+  </main>
+*/
+
+:root {
+  --ink: #030504;
+  --acid: #45df67;
+  --headline: #ffffff;
+  --surface: #415061;
+  --gutter: clamp(24px, 5vw, 72px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background-color: var(--surface);
+}
+
+.radio-hero {
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, .75fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 112px);
+  min-height: 100svh;
+  padding: var(--gutter);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 34px 15px at 12% 32%, #9bb7c6 0 68%, transparent 70%),
+    radial-gradient(ellipse 50px 19px at 65% 77%, #273944 0 68%, transparent 70%),
+    radial-gradient(ellipse 36px 17px at 85% 18%, #a4bfcc 0 68%, transparent 70%),
+    radial-gradient(ellipse 53px 20px at 31% 83%, #283b46 0 68%, transparent 70%),
+    radial-gradient(ellipse 42px 18px at 43% 45%, #607987 0 68%, transparent 70%),
+    linear-gradient(135deg, #718995 0%, #40515e 52%, #2b3c47 100%);
+  background-size: 173px 128px, 211px 166px, 193px 145px, 239px 177px, 157px 129px, auto;
+}
+
+.radio-hero__grid {
+  display: grid;
+  min-width: 0;
+  aspect-ratio: 1.43 / 1;
+  padding: clamp(18px, 3vw, 40px);
+  overflow: hidden;
+  border: clamp(8px, 1.1vw, 14px) solid var(--acid);
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(to right, rgb(28 193 84 / 72%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(28 193 84 / 72%) 1px, transparent 1px);
+  background-size: calc(100% / 16) calc(100% / 9);
+  box-shadow: 0 0 0 1px rgb(131 255 153 / 28%), 0 18px 35px rgb(0 0 0 / 25%);
+}
+
+.radio-hero__title {
+  align-self: center;
+  z-index: 1;
+  margin: 0;
+  color: var(--headline);
+  font-family: Rockwell, "Roboto Slab", "Times New Roman", serif;
+  font-size: clamp(56px, 10vw, 174px);
+  font-weight: 900;
+  line-height: .88;
+  letter-spacing: -.085em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 rgb(255 255 255 / 8%);
+}
+
+.radio-hero__title--tall { display: none; }
+
+.radio-hero__logo {
+  justify-self: center;
+  display: block;
+  width: min(100%, 540px);
+  height: auto;
+  filter: drop-shadow(0 14px 20px rgb(0 0 0 / 26%));
+}
+
+/*
+  Place `文字.svg` and `dictation-mic-filled.svg` in the same folder as this CSS.
+  The first SVG supplies the oval, surrounding type, and RUC lettering; the
+  second is overlaid as the centered microphone mark.
+*/
+.radio-hero__badge {
+  --badge-art: url("text.svg");
+  --badge-mic: url("mic.svg");
+  position: relative;
+  justify-self: center;
+  width: min(100%, 540px);
+  aspect-ratio: 1.65 / 1;
+  background: var(--badge-art) center / contain no-repeat;
+  box-shadow: 0 14px 20px rgb(0 0 0 / 26%);
+}
+
+.radio-hero__badge::after {
+  position: absolute;
+  inset: 24% 42% 23%;
+  content: "";
+  background: var(--badge-mic) center / contain no-repeat;
+}
+
+@media (max-width: 720px) {
+  .radio-hero {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: clamp(48px, 9vw, 88px);
+    padding-block: clamp(40px, 8vw, 72px);
+  }
+
+  .radio-hero__grid {
+    width: 100%;
+    aspect-ratio: .72 / 1;
+    background-size: calc(100% / 8) calc(100% / 15);
+  }
+
+  .radio-hero__title--wide { display: none; }
+
+  .radio-hero__title--tall {
+    display: block;
+    font-size: clamp(64px, 17vw, 132px);
+    line-height: 1.07;
+  }
+
+  .radio-hero__logo,
+  .radio-hero__badge { width: min(92%, 500px); }
+}
+
+
+/* 認識された文字を白色で表示 */
+#recognizedText,
+#recognizedText *,
+#recognizedText .recognized-text,
+#recognizedText .recognized-character {
+  color: #ffffff;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#52616a">
+  <title>Morse Wakarunsu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="radio-hero">
+    <!-- 認識結果を表示するグリッド領域 -->
+    <section class="radio-hero__grid" aria-label="モールス信号の認識結果">
+      <div id="recognizedText" class="recognized-container">
+        <span class="placeholder">
+          <span class="radio-hero__title radio-hero__title--wide" style="display:block;">READY<br>READY<br>READY</span>
+          <span class="radio-hero__title radio-hero__title--tall" style="display:block;">READY<br>READY<br>READY<br>READY<br>READY</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- 録音ボタン -->
+    <button id="toggleButton" class="radio-hero__badge" type="button" aria-label="録音開始"></button>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
