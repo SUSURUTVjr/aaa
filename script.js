@@ -223,7 +223,6 @@ async function startListening() {
     analyser.smoothingTimeConstant = 0.1; // 応答性を高めるため小さめに
 
     sourceNode.connect(analyser);
-    // スピーカーからのハウリングを防ぐため音源はdestinationには繋がない
 
     resetProcessingState();
     isListening = true;
@@ -234,7 +233,8 @@ async function startListening() {
     animationId = requestAnimationFrame(processFrame);
 
   } catch (error) {
-    appendText("\n[録音を開始できませんでした。マイクの権限を確認してください]");
+    // ここでエラーの詳細（エラー名とメッセージ）を画面に出力するように変更
+    appendText("\n[エラー: " + error.name + " - " + error.message + "]");
     stopListening();
   }
 }
@@ -277,3 +277,11 @@ toggleButton.addEventListener("click", () => {
 });
 
 window.addEventListener("pagehide", stopListening);
+```[cite: 2]
+
+<FollowUp>
+このコードに書き換えてiPhoneからアクセスし直した際、画面にどのようなエラー名が表示されるか教えていただけますか？
+</FollowUp>
+
+<ElicitationsGroup>
+</ElicitationsGroup>
