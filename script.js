@@ -1,5 +1,5 @@
 /* =========================================================
-   モールス信号音声認識Webサービス（FFT・高周波特化仕様版）
+   モールス信号音声認識Webサービス（FFT・高周波特化仕様版・iPhone対応修正）
    ========================================================= */
 
 "use strict";
@@ -10,7 +10,7 @@ const toggleButton = document.getElementById("toggleButton");
 let audioContext = null;
 let mediaStream = null;
 let sourceNode = null;
-let analyserNode = null;
+let analyser = null;
 let animationId = null;
 let isListening = false;
 
@@ -24,13 +24,13 @@ updateMode();
 
 // FFTおよびモールス信号検出のパラメータ
 const CONFIG = {
-  targetFrequency: 800,      // 狙いたいモールス信号の周波数 (Hz) ※必要に応じて調整 (例: 700〜1000など)
-  frequencyTolerance: 150,   // ターゲット周波数の許容ズレ幅 (±Hz)
-  minDecibels: -45,          // 音声と判定する信号強度のしきい値 (dB)
-  dotDashRatio: 2.0,         // 短点・長点の判定比率
-  characterGapMultiplier: 3, // 文字間の無音倍率
-  wordGapMultiplier: 7,      // 単語間の無音倍率
-  frameIntervalMs: 20        // サンプリング間隔 (ms)
+  targetFrequency: 800,
+  frequencyTolerance: 150,
+  minDecibels: -45,
+  dotDashRatio: 2.0,
+  characterGapMultiplier: 3,
+  wordGapMultiplier: 7,
+  frameIntervalMs: 20
 };
 
 const INTERNATIONAL = {
@@ -126,7 +126,6 @@ function decodeCurrentSequence() {
   symbolGaps = [];
 }
 
-// FFTの周波数ビンから、特定周波数帯のエネルギー（dB）を抽出する関数
 function checkTargetFrequencyPower(analyser, frequencyData, sampleRate) {
   const binCount = analyser.frequencyBinCount;
   const nyquist = sampleRate / 2;
@@ -203,6 +202,7 @@ async function startListening() {
   }
 
   try {
+    // iPhone Safariで確実に許可を取るため、シンプルにマイクを取得
     mediaStream = await navigator.mediaDevices.getUserMedia({
       audio: {
         echoCancellation: false,
@@ -213,14 +213,15 @@ async function startListening() {
     });
 
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    await audioContext.resume();
+    if (audioContext.state === "suspended") {
+      await audioContext.resume();
+    }
 
     sourceNode = audioContext.createMediaStreamSource(mediaStream);
     
-    // AnalyserNodeの作成（FFTによる周波数解析）
     analyser = audioContext.createAnalyser();
-    analyser.fftSize = 2048; // 分解能の調整
-    analyser.smoothingTimeConstant = 0.1; // 応答性を高めるため小さめに
+    analyser.fftSize = 2048;
+    analyser.smoothingTimeConstant = 0.1;
 
     sourceNode.connect(analyser);
 
@@ -233,7 +234,6 @@ async function startListening() {
     animationId = requestAnimationFrame(processFrame);
 
   } catch (error) {
-    // ここでエラーの詳細（エラー名とメッセージ）を画面に出力するように変更
     appendText("\n[エラー: " + error.name + " - " + error.message + "]");
     stopListening();
   }
@@ -272,15 +272,18 @@ function resetProcessingState() {
 }
 
 toggleButton.addEventListener("click", () => {
-  if (isListening) stopListening();
-  else startListening();
+  if (isListening) {
+    stopListening();
+  } else {
+    startListening();
+  }
 });
 
 window.addEventListener("pagehide", stopListening);
 ```[cite: 2]
 
 <FollowUp>
-このコードに書き換えてiPhoneからアクセスし直した際、画面にどのようなエラー名が表示されるか教えていただけますか？
+この修正版コードを反映してiPhoneのSafari（プライベートモードなど）から再度アクセスし、ボタンを押したときに「録音中」に切り替わるか、あるいはエラー文言が出るか確認していただけますか？
 </FollowUp>
 
 <ElicitationsGroup>
