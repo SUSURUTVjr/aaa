@@ -9,17 +9,19 @@
 </head>
 <body>
   <main class="radio-hero">
-    <!-- 認識結果を表示するグリッド領域 -->
+    <!-- 認識結果を表示するグリッド領域（CSSのタイトルデザインを活用） -->
     <section class="radio-hero__grid" aria-label="モールス信号の認識結果">
-      <div id="recognizedText" class="recognized-container">
-        <span class="placeholder">
-          <span class="radio-hero__title radio-hero__title--wide" style="display:block;">READY<br>READY<br>READY</span>
-          <span class="radio-hero__title radio-hero__title--tall" style="display:block;">READY<br>READY<br>READY<br>READY<br>READY</span>
-        </span>
+      <div id="recognizedText" class="recognized-container" style="display: contents;">
+        <h1 class="radio-hero__title radio-hero__title--wide">
+          <span class="placeholder">READY<br>READY<br>READY</span>
+        </h1>
+        <h1 class="radio-hero__title radio-hero__title--tall">
+          <span class="placeholder">READY<br>READY<br>READY<br>READY<br>READY</span>
+        </h1>
       </div>
     </section>
 
-    <!-- 録音ボタン -->
+    <!-- text.svg と mic.svg を重ねるバッジデザインを活かした録音ボタン -->
     <button id="toggleButton" class="radio-hero__badge" type="button" aria-label="録音開始"></button>
   </main>
 
